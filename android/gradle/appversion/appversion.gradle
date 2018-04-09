@@ -1,0 +1,49 @@
+class AppVersion {
+
+    private int major
+
+    private int minor
+
+    private int patch
+
+    AppVersion(int major, int minor, int patch) {
+        throwExceptionIfVersionIsNotValid(minor)
+        throwExceptionIfVersionIsNotValid(patch)
+
+        this.major = major
+        this.minor = minor
+        this.patch = patch
+    }
+
+    private static void throwExceptionIfVersionIsNotValid(int version) {
+        if (version >= 100) {
+            throw new IllegalArgumentException("Can't use version number more than three digit")
+        }
+    }
+
+    int getCode() {
+        return major * 100_00_0 + minor * 100_0 + patch * 10
+    }
+
+    String getName() {
+        return "${major}.${minor}.${patch}"
+    }
+}
+
+ext {
+    def vProperties = new Properties()
+    vProperties.load(rootProject.file('version.properties').newDataInputStream())
+    def versionMajor = vProperties.getProperty("version.major").toInteger()
+    def versionMinor = vProperties.getProperty("version.minor").toInteger()
+    def versionPatch = vProperties.getProperty("version.patch").toInteger()
+    def appVersion = new AppVersion(versionMajor, versionMinor, versionPatch)
+
+    getVersionCode = {
+        return appVersion.getCode()
+    }
+
+    getVersionName = {
+        return appVersion.getName()
+    }
+}
+
