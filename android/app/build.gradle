@@ -21,9 +21,6 @@ android {
         targetSdkVersion 27
         versionCode project.ext.getVersionCode()
         versionName project.ext.getVersionName()
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
     }
     splits {
         abi {
