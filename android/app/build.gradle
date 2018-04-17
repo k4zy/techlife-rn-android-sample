@@ -9,6 +9,11 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "${project.rootDir}/gradle/appversion/appversion.gradle"
 
+def env(String name, String defValue) {
+    def value = System.getenv()[name]
+    return value == null ? defValue : value
+}
+
 def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
@@ -22,6 +27,27 @@ android {
         versionCode project.ext.getVersionCode()
         versionName project.ext.getVersionName()
     }
+
+    signingConfigs {
+        debug {
+            storeFile = file('./debug.keystore')
+            storePassword = 'android'
+            keyAlias = 'androiddebugkey'
+            keyPassword = 'android'
+        }
+        def releaseSettingGradleFile = new File(env("RELEASE_SETTING_GRADLE", "${project.rootDir}/cookpad-mykitchen.gradle"))
+        if (releaseSettingGradleFile.exists()) {
+            apply from: releaseSettingGradleFile, to: android
+        } else {
+            release {
+                storeFile = debug.storeFile
+                storePassword = debug.storePassword
+                keyAlias = debug.keyAlias
+                keyPassword = debug.keyPassword
+            }
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -37,6 +63,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
 

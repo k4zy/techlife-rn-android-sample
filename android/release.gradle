@@ -1,0 +1,11 @@
+// Move to ~/android/release.gradle
+// このファイルはgitで管理せずにCI上にのみ配置しています。
+signingConfigs {
+    release {
+        def HOME = System.getenv()["HOME"]
+        storeFile file("${HOME}/android/yourapp.keystore")
+        storePassword "your-password"
+        keyAlias "your-alias"
+        keyPassword "your-password"
+    }
+}
