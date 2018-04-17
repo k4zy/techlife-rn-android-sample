@@ -50,6 +50,28 @@ android {
             }
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        staging {
+            buildConfigField "String", "CODEPUSH_ID", '"staging_codepush_id"'
+            buildConfigField "String", "OAUTH_UID", '"staging_uid"'
+            buildConfigField "String", "OAUTH_SECRET", '"staging_secret"'
+            buildConfigField "String", "API_URL", '"https://staging.example.com"'
+            buildConfigField "String", "AUTH_URL", '"https://staging-auth.example.com"'
+            buildConfigField "String", "WEB_URL", '"https://staging.example.com"'
+            applicationId 'your.package.name.staging'
+        }
+        production {
+            buildConfigField "String", "CODEPUSH_ID", '"production_codepush_id"'
+            buildConfigField "String", "OAUTH_UID", '"production_uid"'
+            buildConfigField "String", "OAUTH_SECRET", '"produciton_secret"'
+            buildConfigField "String", "API_URL", '"https://example.com"'
+            buildConfigField "String", "AUTH_URL", '"https://auth.example.com"'
+            buildConfigField "String", "WEB_URL", '"https://example.com"'
+        }
+    }
+
 }
 
 dependencies {
