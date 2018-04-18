@@ -69,11 +69,11 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+                // 例) version1.1.1のx86のversionCode: 101012
+                output.versionCodeOverride = defaultConfig.versionCode + versionCodes.get(abi)
             }
         }
     }
